@@ -28,6 +28,14 @@
     <servlet-name>Scaling</servlet-name>
     <url-pattern>/scaling</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>Push</servlet-name>
+    <servlet-class>fr.unice.polytech.sacc.tp1.PushEngine</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Push</servlet-name>
+    <url-pattern>/push</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
