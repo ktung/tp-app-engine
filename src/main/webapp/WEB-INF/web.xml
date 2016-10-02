@@ -20,6 +20,14 @@
     <servlet-name>Articles</servlet-name>
     <url-pattern>/articles</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>Scaling</servlet-name>
+    <servlet-class>fr.unice.polytech.sacc.tp1.ScalingEngine</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Scaling</servlet-name>
+    <url-pattern>/scaling</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
