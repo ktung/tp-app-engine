@@ -38,7 +38,26 @@ public class DataStoreEngine extends HttpServlet {
         PrintWriter out = response.getWriter();
         while (results.hasNext()) {
             Entity entity = results.next();
-            out.format(entity.getString("prop"));
+            out.format("json: %s; key: %s", entity.getString("prop"), entity.key());
+        }
+    }
+
+    /**
+     * http://localhost:8080/datastore?key={key}
+     */
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String keyStr = request.getParameter("key");
+
+        Datastore datastore = DatastoreOptions.defaultInstance().service();
+        Query<Entity> query = Query.entityQueryBuilder().kind(ARTICLE_KIND).build();
+        QueryResults<Entity> results = datastore.run(query);
+
+        while (results.hasNext()) {
+            Entity entity = results.next();
+            Key key = entity.key();
+            if (Integer.parseInt(keyStr) == key.id()) {
+                datastore.delete(key);
+            }
         }
     }
 }
