@@ -36,6 +36,14 @@
     <servlet-name>Push</servlet-name>
     <url-pattern>/push</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>DataStore</servlet-name>
+    <servlet-class>fr.unice.polytech.sacc.tp1.DataStoreEngine</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DataStore</servlet-name>
+    <url-pattern>/datastore</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
