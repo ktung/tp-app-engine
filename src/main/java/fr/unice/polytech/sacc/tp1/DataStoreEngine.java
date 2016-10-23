@@ -1,6 +1,6 @@
 package fr.unice.polytech.sacc.tp1;
 
-import com.google.cloud.datastore.*;
+import com.google.appengine.api.datastore.*;
 import com.google.gson.Gson;
 import fr.unice.polytech.sacc.tp1.model.Article;
 
@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class DataStoreEngine extends HttpServlet {
 
@@ -17,28 +18,29 @@ public class DataStoreEngine extends HttpServlet {
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Datastore datastore = DatastoreOptions.defaultInstance().service();
-        KeyFactory keyFactory = datastore.newKeyFactory().kind(ARTICLE_KIND);
-        IncompleteKey key = keyFactory.kind(ARTICLE_KIND).newKey();
-
+        // Get the json object then deserialize
         Article article = new Article("Crumble", 2.4, 1);
-        Gson gson = new Gson();
 
-        FullEntity<IncompleteKey> articleEntry = FullEntity.builder(key)
-            .set("prop", gson.toJson(article)).build();
-        datastore.add(articleEntry);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Entity articleEntity = new Entity(ARTICLE_KIND);
+        articleEntity.setProperty("name", article.getName());
+        articleEntity.setProperty("price", article.getPrice());
+        articleEntity.setProperty("quantity", article.getQuantity());
+
+        datastore.put(articleEntity);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Datastore datastore = DatastoreOptions.defaultInstance().service();
-        Query<Entity> query = Query.entityQueryBuilder().kind(ARTICLE_KIND).build();
-        QueryResults<Entity> results = datastore.run(query);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
+        Query q = new Query(ARTICLE_KIND);
+        List<Entity> results = datastore.prepare(q).asList(FetchOptions.Builder.withDefaults());
         response.setContentType("text/plain");
         PrintWriter out = response.getWriter();
-        while (results.hasNext()) {
-            Entity entity = results.next();
-            out.format("json: %s; key: %s", entity.getString("prop"), entity.key());
+        for (Entity result : results) {
+            out.format("key: %s; name: %s; price: %s; quantity: %s; ",
+                    result.getKey(), result.getProperty("name"),
+                    result.getProperty("price"), result.getProperty("quantity"));
         }
     }
 
@@ -46,18 +48,15 @@ public class DataStoreEngine extends HttpServlet {
      * http://localhost:8080/datastore?key={key}
      */
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String keyStr = request.getParameter("key");
+        String name = request.getParameter("name");
 
-        Datastore datastore = DatastoreOptions.defaultInstance().service();
-        Query<Entity> query = Query.entityQueryBuilder().kind(ARTICLE_KIND).build();
-        QueryResults<Entity> results = datastore.run(query);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Query q = new Query(ARTICLE_KIND).setFilter(
+            new Query.FilterPredicate("name", Query.FilterOperator.EQUAL, name));
+        List<Entity> results = datastore.prepare(q).asList(FetchOptions.Builder.withDefaults());
 
-        while (results.hasNext()) {
-            Entity entity = results.next();
-            Key key = entity.key();
-            if (Integer.parseInt(keyStr) == key.id()) {
-                datastore.delete(key);
-            }
+        for (Entity result : results) {
+            datastore.delete(result.getKey());
         }
     }
 }
