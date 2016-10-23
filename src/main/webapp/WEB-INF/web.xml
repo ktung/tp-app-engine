@@ -44,14 +44,14 @@
     <servlet-name>DataStore</servlet-name>
     <url-pattern>/datastore</url-pattern>
   </servlet-mapping>
-  <!--<servlet>-->
-    <!--<servlet-name>DataStoreServletAncestor</servlet-name>-->
-    <!--<servlet-class>fr.unice.polytech.sacc.tp1.DataStoreAncestorEngine</servlet-class>-->
-  <!--</servlet>-->
-  <!--<servlet-mapping>-->
-    <!--<servlet-name>DataStoreServletAncestor</servlet-name>-->
-    <!--<url-pattern>/datastoreancestor</url-pattern>-->
-  <!--</servlet-mapping>-->
+  <servlet>
+    <servlet-name>DataStoreServletAncestor</servlet-name>
+    <servlet-class>fr.unice.polytech.sacc.tp1.DataStoreAncestorEngine</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DataStoreServletAncestor</servlet-name>
+    <url-pattern>/datastoreancestor</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>

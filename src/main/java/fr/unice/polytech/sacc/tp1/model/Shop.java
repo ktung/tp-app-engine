@@ -3,6 +3,8 @@ package fr.unice.polytech.sacc.tp1.model;
 import java.util.List;
 
 public class Shop {
+    public static String SHOP_KIND = "shop";
+
     private String name;
     private List<Article> articles;
 

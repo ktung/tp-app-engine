@@ -12,10 +12,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import static fr.unice.polytech.sacc.tp1.model.Article.ARTICLE_KIND;
+
 public class DataStoreEngine extends HttpServlet {
-
-    public static String ARTICLE_KIND = "article";
-
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Get the json object then deserialize

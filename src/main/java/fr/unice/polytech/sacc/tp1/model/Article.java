@@ -1,6 +1,8 @@
 package fr.unice.polytech.sacc.tp1.model;
 
 public class Article {
+    public static String ARTICLE_KIND = "article";
+
     private String name;
     private Double price;
     private Integer quantity;
